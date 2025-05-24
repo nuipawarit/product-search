@@ -35,11 +35,15 @@ api.interceptors.response.use(
         if (error.response) {
             const status = error.response.status;
             const data = error.response.data as { message: string };
+            
             apiError.message = data?.message || `HTTP error ${status}`;
             apiError.statusCode = status;
+
             if (status === 401) {
                 localStorage.removeItem('token');
-                window.location.href = '/login';
+                if (window.location.pathname !== '/login') {
+                    window.location.href = '/login';
+                }
             }
         } else if (error.request) {
             apiError.message = 'No response from server. Please check your network connection.';
