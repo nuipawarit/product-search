@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:3001/api
+    ports:
+      - "3000:4173"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - PORT=3000
+      - JWT_SECRET=1d6010a101f062a84cdcbbd90cf0160ae2b742aeaf78a8905ac0d153169fecf4
+      - FRONTEND_URL=http://localhost:3000
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
