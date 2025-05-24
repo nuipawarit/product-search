@@ -10,7 +10,7 @@ export class AuthService {
     password: 'password',
   };
 
-  constructor(private jwtService: JwtService) { }
+  constructor(private jwtService: JwtService) {}
 
   validateUser(email: string | undefined, pass: string | undefined) {
     if (email === this.user.email && pass === this.user.password) {
