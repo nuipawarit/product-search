@@ -37,48 +37,48 @@ describe('ProductsController', () => {
   });
 
   describe('getProducts', () => {
-    it('should return all products when no query is provided', () => {
-      mockProductsService.findAll.mockReturnValue(mockProducts);
+    it('should return all products when no query is provided', async () => {
+      mockProductsService.findAll.mockResolvedValue(mockProducts);
 
-      const result = controller.getProducts('');
+      const result = await controller.getProducts('');
 
       expect(result).toEqual({ products: mockProducts });
       expect(service.findAll).toHaveBeenCalledWith('');
     });
 
-    it('should return filtered products when query is provided', () => {
+    it('should return filtered products when query is provided', async () => {
       const filteredProducts = [mockProducts[0]];
-      mockProductsService.findAll.mockReturnValue(filteredProducts);
+      mockProductsService.findAll.mockResolvedValue(filteredProducts);
 
-      const result = controller.getProducts('One');
+      const result = await controller.getProducts('One');
 
       expect(result).toEqual({ products: filteredProducts });
       expect(service.findAll).toHaveBeenCalledWith('One');
     });
 
-    it('should return empty products array when no matches found', () => {
-      mockProductsService.findAll.mockReturnValue([]);
+    it('should return empty products array when no matches found', async () => {
+      mockProductsService.findAll.mockResolvedValue([]);
 
-      const result = controller.getProducts('NonExistent');
+      const result = await controller.getProducts('NonExistent');
 
       expect(result).toEqual({ products: [] });
       expect(service.findAll).toHaveBeenCalledWith('NonExistent');
     });
 
-    it('should handle undefined query parameter', () => {
-      mockProductsService.findAll.mockReturnValue(mockProducts);
+    it('should handle undefined query parameter', async () => {
+      mockProductsService.findAll.mockResolvedValue(mockProducts);
 
-      const result = controller.getProducts(undefined as any);
+      const result = await controller.getProducts(undefined as any);
 
       expect(result).toEqual({ products: mockProducts });
       expect(service.findAll).toHaveBeenCalledWith(undefined);
     });
 
-    it('should pass through the exact query to service', () => {
+    it('should pass through the exact query to service', async () => {
       const query = 'Product';
-      mockProductsService.findAll.mockReturnValue(mockProducts);
+      mockProductsService.findAll.mockResolvedValue(mockProducts);
 
-      controller.getProducts(query);
+      await controller.getProducts(query);
 
       expect(service.findAll).toHaveBeenCalledWith(query);
     });
