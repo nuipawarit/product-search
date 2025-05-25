@@ -80,7 +80,10 @@ export async function login(
 export interface Product {
     id: string;
     name: string;
-    price: number;
+    price?: number;
+    image_url?: string;
+    description?: string;
+    category?: string;
 }
 
 export async function searchProducts(

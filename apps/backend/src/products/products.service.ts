@@ -28,13 +28,13 @@ export class ProductsService {
     try {
       if (query && query.trim()) {
         const searchResult = await client.query(
-          'SELECT id, name, price FROM products WHERE LOWER(name) LIKE LOWER($1) ORDER BY name',
+          'SELECT id, name, price, image_url, description, category FROM products WHERE LOWER(name) LIKE LOWER($1) OR LOWER(description) LIKE LOWER($1) OR LOWER(category) LIKE LOWER($1) ORDER BY name',
           [`%${query.trim()}%`],
         );
         result = searchResult.rows;
       } else {
         const allResult = await client.query(
-          'SELECT id, name, price FROM products ORDER BY name',
+          'SELECT id, name, price, image_url, description, category FROM products ORDER BY name',
         );
         result = allResult.rows;
       }
