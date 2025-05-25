@@ -1,84 +1,294 @@
-# Turborepo starter
+# Product Search Application
 
-This Turborepo starter is maintained by the Turborepo core team.
+A modern full-stack application for listing and searching products with user authentication. Built with React, NestJS, and PostgreSQL in a Turborepo monorepo.
 
-## Using this example
+## 🏗️ Architecture Overview
 
-Run the following command:
+### Current Implementation
 
-```sh
-npx create-turbo@latest
+![Architecture Diagram](./images/diagram.png)
+
+### Key Components
+
+- **Frontend (React)**: Single-page application with authentication and product search
+- **Backend (NestJS)**: RESTful API with JWT authentication and caching
+- **Database (PostgreSQL)**: Persistent storage for products and user data
+- **Cache (Redis)**: Performance optimization for search results and sessions
+
+## 🚀 Features
+
+### ✅ Implemented Features
+- **User Authentication**: JWT-based login system with protected routes
+- **Product Listing**: Browse all products with responsive grid layout
+- **Real-time Search**: Fast product search with query filtering
+- **Responsive Design**: Mobile-first design optimized for all devices
+- **Performance Caching**: Redis caching for search results and API responses
+- **Error Handling**: Comprehensive error states and user feedback
+- **Loading States**: Skeleton loaders and loading indicators
+
+### 🔒 Authentication Flow
+1. User visits protected routes → redirected to login
+2. Login with email/password → JWT token generated
+3. Token stored in localStorage → automatic API authentication
+4. Protected routes accessible → search and browse products
+5. Token validation on each API request
+
+### 🔍 Search Capabilities
+- Full-text search across product names, descriptions, and categories
+- Case-insensitive query matching
+- Real-time results as you type
+- Empty state handling for no results
+- Category-based filtering
+- Price and metadata display
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework**: React 19.1.0 with TypeScript
+- **Build Tool**: Vite 6.3.5 for fast development and building
+- **Styling**: Tailwind CSS 4.1.7 for responsive design
+- **Routing**: React Router DOM 7.6.0 for navigation
+- **HTTP Client**: Axios 1.9.0 for API communication
+- **State Management**: React hooks and local storage
+
+### Backend
+- **Framework**: NestJS 11.0.1 with TypeScript
+- **Authentication**: JWT tokens with Passport.js
+- **Database**: PostgreSQL with connection pooling
+- **Caching**: Redis with cache-manager integration
+- **Testing**: Jest with comprehensive test coverage
+- **Validation**: Built-in NestJS validation and guards
+
+### Database & Cache
+- **Primary Database**: PostgreSQL 15 with Alpine Docker image
+- **Cache Layer**: Redis Alpine for performance optimization
+- **ORM**: Native SQL queries with pg driver
+- **Connection Pooling**: Configured for optimal performance
+
+### DevOps & Tools
+- **Monorepo**: Turborepo for efficient builds and task running
+- **Package Manager**: npm with workspaces
+- **Containerization**: Docker with multi-stage builds
+- **Development**: Docker Compose for local environment
+- **Code Quality**: ESLint, Prettier, TypeScript strict mode
+- **Testing**: Jest for unit and e2e tests
+
+## 📁 Project Structure
+
+```
+product-search/
+├── apps/
+│   ├── frontend/                 # React application
+│   │   ├── src/
+│   │   ├── public/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   └── backend/                  # NestJS application
+│       ├── src/
+│       ├── test/                     # E2E and unit tests
+│       ├── scripts/                  # Database initialization
+│       │   └── init.sql              # Database Seeding SQL
+│       ├── Dockerfile
+│       └── package.json
+├── packages/                     # Shared packages (future expansion)
+│   ├── api-types/                    # Shared TypeScript types
+│   ├── ui/                           # Shared UI components
+│   └── utils/                        # Shared utilities
+├── docker-compose.yml            # Local development environment
+├── turbo.json                    # Turborepo configuration
+└── package.json                  # Root package configuration
 ```
 
-## What's inside?
+## 🚦 Getting Started
 
-This Turborepo includes the following packages/apps:
+### Prerequisites
+- Node.js 18+ 
+- npm 8+
+- Docker and Docker Compose (for local development)
+- Git
 
-### Apps and Packages
+### Quick Start with Docker
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+1. **Clone and start the application**
+   ```powershell
+   git clone <repository-url>
+   cd product-search
+   docker-compose up --build
+   ```
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+2. **Access the application**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:3001/api
+   - Database: localhost:5432
+   - Redis: localhost:6379
 
-### Utilities
+3. **Demo Login Credentials**
+   - Email: `user@example.com`
+   - Password: `password`
 
-This Turborepo has some additional tools already setup for you:
+### Development Setup
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+1. **Install dependencies**
+   ```powershell
+   npm install
+   ```
 
-### Build
+2. **Start development servers**
+   ```powershell
+   # Start all services
+   npm run dev
+   
+   # Or start individually
+   cd apps/frontend && npm run dev    # Frontend on :3000
+   cd apps/backend && npm run dev     # Backend on :3001
+   ```
 
-To build all apps and packages, run the following command:
+3. **Database Setup**
+   ```powershell
+   # Using Docker for development database
+   docker-compose up postgres redis -d
+   ```
 
+### Available Scripts
+
+```powershell
+# Development
+npm run dev              # Start all applications in watch mode
+npm run build            # Build all applications for production
+npm run lint             # Lint all code with ESLint
+npm run format           # Format code with Prettier
+npm run check-types      # TypeScript type checking
+
+# Testing
+cd apps/backend
+npm run test             # Run unit tests
+npm run test:e2e         # Run end-to-end tests
+npm run test:cov         # Run tests with coverage
 ```
-cd my-turborepo
-pnpm build
+
+## 🔐 Authentication & Security
+
+### Demo User Account
+- **Email**: `user@example.com`
+- **Password**: `password`
+- **Token Expiry**: 1 hour
+
+### Security Features
+- JWT-based authentication with secure token storage
+- Protected API routes with Passport.js guards
+- CORS configuration for cross-origin requests
+- Input validation and sanitization
+- Error handling without sensitive data exposure
+
+## 📊 Database Schema
+
+### Products Table
+```sql
+CREATE TABLE products (
+  id VARCHAR(50) PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  image_url VARCHAR(500),
+  description TEXT,
+  category VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
-### Develop
+## 🔍 API Endpoints
 
-To develop all apps and packages, run the following command:
+### Authentication
+- `POST /api/auth/login` - User login with email/password
 
-```
-cd my-turborepo
-pnpm dev
-```
+### Products
+- `GET /api/products` - List all products (requires authentication)
+- `GET /api/products?q=search` - Search products by query
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
+### Response Format
+```json
+{
+  "products": [
+    {
+      "id": "p1",
+      "name": "MacBook Pro 16\"",
+      "price": 2499.00,
+      "image_url": "https://...",
+      "description": "Powerful laptop...",
+      "category": "Laptops"
+    }
+  ]
+}
 ```
 
-## Useful Links
+## 📊 Performance Features
 
-Learn more about the power of Turborepo:
+- **Redis Caching**: Search results cached for faster repeat queries
+- **Database Indexing**: Optimized indexes on searchable fields
+- **Connection Pooling**: PostgreSQL connection pool for scalability
+- **Responsive Images**: Optimized image loading with fallbacks
+- **Code Splitting**: Frontend bundle optimization
+- **Lazy Loading**: Components loaded on demand
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+## 🚀 Production Deployment
+
+### Environment Variables
+
+**Backend (.env)**
+```env
+JWT_SECRET=your-secret-key
+DB_HOST=your-db-host
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=your-password
+DB_NAME=product
+REDIS_HOST=your-redis-host
+REDIS_PORT=6379
+FRONTEND_URL=https://your-frontend-domain.com
+```
+
+**Frontend (.env)**
+```env
+VITE_API_BASE_URL=https://your-api-domain.com/api
+```
+
+## 🧪 Testing
+
+### Test Coverage
+- **Backend**: Unit tests for services and controllers
+- **E2E Tests**: Complete authentication and search flows
+- **API Tests**: All endpoints with various scenarios
+- **Error Handling**: Invalid credentials, network errors, edge cases
+
+### Running Tests
+```powershell
+cd apps/backend
+npm run test           # Unit tests
+npm run test:e2e       # Integration tests
+npm run test:cov       # Coverage report
+```
+
+## 🔧 Future Enhancements
+
+### Planned Features
+- Pagination for large product lists
+- Real-time inventory updates
+
+### Architecture Evolution
+- **Microservices**: Split into dedicated auth and product services
+- **API Gateway**: Centralized routing and rate limiting
+- **Event-Driven**: Product updates via message queues
+- **CDN Integration**: Global content delivery
+- **Advanced Caching**: Multi-layer caching strategy
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Run tests (`npm run test`)
+4. Commit changes (`git commit -m 'Add amazing feature'`)
+5. Push to branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+
+
