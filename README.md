@@ -4,8 +4,6 @@ A modern full-stack application for listing and searching products with user aut
 
 ## 🏗️ Architecture Overview
 
-### Current Implementation
-
 ![Architecture Diagram](./images/diagram.png)
 
 ### Key Components
