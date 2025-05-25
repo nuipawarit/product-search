@@ -21,8 +21,33 @@ services:
       - PORT=3000
       - JWT_SECRET=1d6010a101f062a84cdcbbd90cf0160ae2b742aeaf78a8905ac0d153169fecf4
       - FRONTEND_URL=http://localhost:3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=product
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=product
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./apps/backend/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   redis:
     image: redis:alpine
     ports:
       - "6379:6379"
+
+volumes:
+  postgres_data:
